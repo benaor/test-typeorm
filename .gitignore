@@ -3,5 +3,5 @@ back/node_modules
 dist
 back/docs/db
 .DS_Store
-docs
+cours
 package-lock.json
