@@ -1,0 +1,29 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "db:logs": "docker-compose -f ops/docker-compose.yml logs -f",
+    "db:stop": "docker-compose -f ops/docker-compose.yml rm -s -f",
+    "db:start": "docker-compose -f ops/docker-compose.yml up -d --force-recreate; npm run db:sync; echo admin: \thttp://localhost:50500 'admin@pg.com,admin'; echo diagram: \thttp://localhost:8081/db/diagram/; echo  doc: \thttp://localhost:8081/back/",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+    "db:sync": "npm run build; node --require ts-node/register ./node_modules/typeorm/cli.js --config ./ops/ormconfig.json schema:sync; npm run doc:db ; echo http://localhost:8081/db/diagram/",
+    "db:drop": "node --require ts-node/register ./node_modules/typeorm/cli.js --config ./ops/ormconfig.json schema:drop ",
+    "db:generate-data": "npm run db:drop; npm run db:sync; node --require ts-node/register dist/generate-fake-data.js",
+    "doc:back": "typedoc --disableOutputCheck --out ./docs/back/ src/",
+    "doc:db": "docker-compose -f ops/docker-compose.yml up -d"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.0.23",
+    "pg": "^8.3.0",
+    "ts-node": "^8.10.2",
+    "tslint": "^6.1.2",
+    "typeorm": "^0.2.25",
+    "typescript": "^3.9.6"
+  }
+}
