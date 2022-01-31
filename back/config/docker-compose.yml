@@ -1,0 +1,56 @@
+version: '3.5'
+
+services:
+  postgres_typeorm:
+    container_name: postgres_typeorm
+    image: postgres:10.15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app.v0
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=200
+    #volumes:
+     # - /tmp/pgdata:/var/lib/postgresql/data
+    ports:
+      - "54320:5432"
+    networks:
+      - postgres_typeorm
+    restart: unless-stopped
+
+  pgadmin_typeorm:
+    container_name: pgadmin_typeorm
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@pg.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_SERVER_JSON_FILE: /pgadmin4/servers.json
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    ports:
+      - "${PGADMIN_PORT:-50500}:80"
+    networks:
+      - postgres_typeorm
+    restart: unless-stopped
+
+  doc_typeorm:
+    container_name: doc_typeorm
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d
+      - ../docs/:/usr/share/nginx/html
+    ports:
+      - "8081:80"
+    environment:
+      - NGINX_PORT=80
+
+  schemaspy_typeorm:
+    volumes:
+      - '../docs/db/diagram:/output'
+    image: 'schemaspy/schemaspy:snapshot'
+    entrypoint: ['/bin/sh','-c',"sleep 30; /usr/local/bin/schemaspy -t pgsql -u postgres -db app.v0 -host postgres_typeorm  -p postgres --port 5432"]
+    networks:
+      - postgres_typeorm
+networks:
+  postgres_typeorm:
+    driver: bridge
+
