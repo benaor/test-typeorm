@@ -1,4 +1,4 @@
-import { createConnection, getManager } from "typeorm"
+import { createConnection } from "typeorm"
 
 async function run() {
   const connection = await createConnection({
