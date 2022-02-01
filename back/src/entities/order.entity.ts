@@ -35,5 +35,6 @@ export class Order extends BaseEntity {
   //  @Column()
   stores: Store[]
 
+  @OneToOne((type) => OrderDetails, { cascade: true })
   details: OrderDetails
 }

@@ -28,5 +28,7 @@ export class OrderDetails extends BaseEntity {
   @Column()
   details: string
 
+  @OneToOne((type) => Order, { onDelete: "CASCADE" })
+  @JoinColumn()
   order: Order
 }
