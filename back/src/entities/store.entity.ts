@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Seller } from "./seller.entity"
 
 /**
  * Amazon Store Entity
@@ -14,7 +15,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
  * @class Store
  */
 @Entity()
-export class Store extends BaseEntity {
+export class  Store extends BaseEntity {
   
   @PrimaryGeneratedColumn()
   id: number
@@ -36,4 +37,7 @@ export class Store extends BaseEntity {
 
   @Column()
   city: string
+
+  @ManyToOne(type=>Seller, {onDelete:"CASCADE", onUpdate:"CASCADE"})
+  seller:Seller
 }

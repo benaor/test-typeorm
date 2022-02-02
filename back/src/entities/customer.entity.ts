@@ -1,9 +1,14 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from "typeorm"
 import { Order } from "./order.entity"
 
 @Entity()
 export class Customer extends BaseEntity {
-
   @PrimaryGeneratedColumn()
   id: number
 
@@ -31,6 +36,6 @@ export class Customer extends BaseEntity {
   @Column()
   city: string
 
-//   @Column()
-  orders: Order[ ]
+  @OneToMany((type) => Order, (o: Order) => o.customer, { cascade: true })
+  orders: Order[]
 }

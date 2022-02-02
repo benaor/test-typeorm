@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Store } from "./store.entity";
 
 /**
@@ -47,7 +47,7 @@ export class Seller extends BaseEntity {
      @Column()
      city:string
 
-    //  @Column()
+    @OneToMany(type=>Store, (s:Store) => s.seller, {cascade:true})
      stores :Store[]
 
 }

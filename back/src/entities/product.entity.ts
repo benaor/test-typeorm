@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "./category.entity";
 
 /**
@@ -25,7 +25,7 @@ export class Product extends BaseEntity{
     @Column()
     price:string
 
-    // @Column()
+    @ManyToOne(type=>Category, {onDelete:"SET NULL"})
     category:Category
 
 }

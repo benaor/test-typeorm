@@ -3,7 +3,9 @@ import {
   Entity,
   BaseEntity,
   PrimaryColumn,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany
 } from "typeorm"
 
 /**
@@ -24,9 +26,13 @@ export class Category extends BaseEntity {
   @Column()
   name: string
 
-  //   @Column()
+  @ManyToOne((type) => Category, (c: Category) => c.childrenCategories, {
+    onDelete: "SET NULL"
+  })
   parentCategory: Category
 
-  //   @Column()
-  childrenCategory: Category[]
+  @OneToMany((type) => Category, (c: Category) => c.parentCategory, {
+    cascade: false
+  })
+  childrenCategories: Category[]
 }

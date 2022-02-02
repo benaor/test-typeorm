@@ -3,9 +3,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from "typeorm"
+import { Customer } from "./customer.entity"
 import { OrderItem } from "./order-item.entity"
 import { OrderDetails } from "./order.details.entity"
 import { Store } from "./store.entity"
@@ -29,12 +32,16 @@ export class Order extends BaseEntity {
   @Column()
   date: Date
 
-  //  @Column()
+  @OneToMany((type) => OrderItem, (oi: OrderItem) => oi.order, {
+    cascade: true
+  })
   orderItems: OrderItem[]
 
-  //  @Column()
   stores: Store[]
 
   @OneToOne((type) => OrderDetails, { cascade: true })
   details: OrderDetails
+
+  @ManyToOne((type) => Customer, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  customer: Customer
 }
