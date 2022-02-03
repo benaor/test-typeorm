@@ -3,6 +3,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -37,6 +39,8 @@ export class Order extends BaseEntity {
   })
   orderItems: OrderItem[]
 
+  @ManyToMany((type) => Store, (s: Store) => s.orders, { cascade: false })
+  @JoinTable()
   stores: Store[]
 
   @OneToOne((type) => OrderDetails, { cascade: true })

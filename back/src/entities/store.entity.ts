@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from "typeorm"
+import { Order } from "./order.entity"
 import { Seller } from "./seller.entity"
 
 /**
@@ -15,8 +23,7 @@ import { Seller } from "./seller.entity"
  * @class Store
  */
 @Entity()
-export class  Store extends BaseEntity {
-  
+export class Store extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -38,6 +45,6 @@ export class  Store extends BaseEntity {
   @Column()
   city: string
 
-  @ManyToOne(type=>Seller, {onDelete:"CASCADE", onUpdate:"CASCADE"})
-  seller:Seller
+  @ManyToOne((type) => Seller, { onDelete: "CASCADE", onUpdate: "CASCADE" })
+  seller: Seller
 }
